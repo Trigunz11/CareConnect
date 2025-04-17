@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 export async function POST(request: Request) {
   try {
-    const { cedula, password, nombre, apellido, fecha_de_nacimiento, email } =
+    const { cedula, password, nombre, apellido, fecha_de_nacimiento, email, genero } =
       await request.json();
 
     // Validate required fields
@@ -15,6 +15,7 @@ export async function POST(request: Request) {
       !apellido ||
       !fecha_de_nacimiento ||
       !email
+      !genero
     ) {
       return NextResponse.json(
         { error: "Todos los campos son requeridos" },
@@ -41,8 +42,8 @@ export async function POST(request: Request) {
 
     // Insert new user
     await query(
-      "INSERT INTO users (cedula, password, nombre, apellido, fecha_de_nacimiento, email) VALUES (?, ?, ?, ?, ?, ?)",
-      [cedula, hashedPassword, nombre, apellido, fecha_de_nacimiento, email]
+      "INSERT INTO users (cedula, password, nombre, apellido, fecha_de_nacimiento, email, genero) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [cedula, hashedPassword, nombre, apellido, fecha_de_nacimiento, email, genero]
     );
 
     return NextResponse.json(
